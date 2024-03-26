@@ -37,7 +37,7 @@ const googWebFontDl = async (options) => {
   });
 }
 
-module.exports = googWebFontDl;
-module.exports.default = googWebFontDl;  // ES6: import downloader from 'goog-webfont-dl'
+module.exports = googWebFontDlFork;
+module.exports.default = googWebFontDlFork;  // ES6: import downloader from 'goog-webfont-dl'
 module.exports.formats = allFormats;
 module.exports.styles = allStyles;
