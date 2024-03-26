@@ -2,28 +2,17 @@ const request = require("request");
 const fs = require("fs");
 const path = require("path");
 const mkdirp = require("mkdirp");
-const _ = require("lodash");
 
-function createDirectory(options) {
-  return new Promise(function(resolve, reject) {
-    mkdirp(options.destination, function(err) {
-      if (err) {
-        return reject(err);
-      }
-      resolve();
-    });
-  });
-}
+const downloadFont = (destination, font) => {
+  console.log(`Getting: ${font.filename}`)
+  return new Promise((resolve, reject) => {
+    const out = fs.createWriteStream(path.join(destination, font.filename));
 
-function downloadFont(destination, font) {
-  return new Promise(function(resolve, reject) {
-    var out = fs.createWriteStream(path.join(destination, font.name));
-
-    out.on("error", function(err) {
+    out.on("error", (err) => {
       reject(err);
     });
 
-    out.on("finish", function() {
+    out.on("finish", () => {
       resolve();
     });
 
@@ -31,14 +20,9 @@ function downloadFont(destination, font) {
   });
 }
 
-function downloadFonts(options, parsingResults) {
-  return createDirectory(options).then(function() {
-    function download(obj) {
-      downloadFont(options.destination, obj);
-    }
-
-    return Promise.all(_.map(parsingResults.fontUrls, download));
-  });
+const downloadFonts = (options, fontlist) => {
+  mkdirp.sync(options.destination);
+  return Promise.all(fontlist.map(font => downloadFont(options.destination, font)));
 }
 
 module.exports = downloadFonts;

@@ -65,8 +65,7 @@ const parseFontsFromCSS = (format, options, cssText) => {
       weight:   null,
       url:      null,
       filename: null,
-      format:   format,
-      position: {}
+      format:   format
     }
 
     for (const declaration of rule.declarations) {
@@ -81,22 +80,13 @@ const parseFontsFromCSS = (format, options, cssText) => {
           CURFONT.weight = declaration.value;
           break;
         case 'src':
-          CURFONT.url = declaration.value.replace(/^url\((.+?)\).+/,"$1");
-          CURFONT.position = {
-            start: {
-              line: declaration.position.start.line,
-              column: declaration.position.start.column
-            },
-            end: {
-              line: declaration.position.end.line,
-              column: declaration.position.end.column
-            }
-          };
+          CURFONT.url = declaration.value.replace(/url\((.+?)\).*/,"$1");
           break;
       }
       CURFONT.filename = `${CURFONT.family}-${CURFONT.style}-${CURFONT.weight}.${CURFONT.format}`.replace(/\s/g,'_')
-
-      fontlist.push(CURFONT);
+      if (fontlist.map(font => font.filename).indexOf(CURFONT.filename) === -1) {
+        fontlist.push(CURFONT);
+      }
     }
   }
   return fontlist;
