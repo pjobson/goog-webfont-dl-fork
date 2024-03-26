@@ -1,21 +1,20 @@
-var request = require("request");
-var path = require("path");
-var posix = require("path").posix;
-var querystring = require("querystring");
+const request     = require("request");
+const path        = require("path");
+const posix       = require("path").posix;
+const querystring = require("querystring");
 
-var cssParser = require("./cssParser");
-var fontDownloader = require("./fontDownloader");
-var cssGenerator = require("./cssGenerator");
+const cssParser      = require("./cssParser");
+const fontDownloader = require("./fontDownloader");
+const cssGenerator   = require("./cssGenerator");
 
-var allFormats = ["ttf", "eot", "woff", "woff2", "svg"];
-var allStyles = [
+const allFormats = ["ttf", "eot", "woff", "woff2", "svg"];
+const allStyles = [
   "100",       "300",       "400",       "700",       "900",
   "100italic", "300italic", "400italic", "700italic", "900italic",
 ];
 
-function googWebFontDl(options) {
-  if (typeof options === "string") options = { font: options };
-  else if (options == null) options = {};
+const googWebFontDl = async (options) => {
+  options = (typeof options === "string") ? { font: options } : options;
 
   if (options.font == null) {
     throw new Error("You need to give a font name as downloader('name') or downloader({ font: 'name' })");
@@ -28,9 +27,10 @@ function googWebFontDl(options) {
   if (options.destination == null) {
     options.destination = options.font;
   }
+
   options.destination = path.normalize(options.destination);
 
-  var formats = options.formats;
+  let formats = options.formats;
   if (formats == null || formats === "all") {
     formats = allFormats;
   }
@@ -39,7 +39,7 @@ function googWebFontDl(options) {
     throw new Error("please select at least one format (or -a for all formats)");
   }
 
-  for (var fmt of formats) {
+  for (const fmt of formats) {
     if (!cssParser.userAgentMap[fmt]) {
       throw new Error("Unknown format “" + fmt + "”");
     }
@@ -49,31 +49,28 @@ function googWebFontDl(options) {
     options.styles = allStyles;
   }
 
-  var url = "https://fonts.googleapis.com/css?family=" + querystring.escape(options.font) + ":" + options.styles;
+  let url = `https://fonts.googleapis.com/css?family=${querystring.escape(options.font)}:${options.styles}`
 
   if (options.subset) {
-    url += "&subset=" + querystring.escape(options.subset);
+    url = `${url}&subset=${querystring.escape(options.subset)}`;
   }
 
   if (options.verbose) {
-    console.log("Downloading webfont formats: “" + formats + "” to folder “" + options.destination + "”");
-    console.log(url);
+    console.log(`Downloading webfont formats: "${formats}" to folder "${options.destination}"`);
   }
 
   if (options.proxy) {
     request = request.defaults({"proxy": options.proxy});
   }
 
-  var parsingResults = {
-    cssObj: {},
-    fontUrls: []
-  };
-
-  return cssParser(options, url, parsingResults).then(function() {
-    return fontDownloader(options, parsingResults);
-  }).then(function() {
-    return cssGenerator(options, parsingResults);
-  });
+  cssParser(options, url).then(list => {
+    console.log(list);
+  })
+  // return cssParser(options, url, parsingResults).then(() => {
+  //   return fontDownloader(options, parsingResults);
+  // }).then(() => {
+  //   return cssGenerator(options, parsingResults);
+  // });
 }
 
 module.exports = googWebFontDl;

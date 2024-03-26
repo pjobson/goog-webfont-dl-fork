@@ -1,9 +1,8 @@
-var Promise = require("bluebird");
-var request = require("request");
-var fs = require("fs");
-var path = require("path");
-var mkdirp = require("mkdirp");
-var _ = require("lodash");
+const request = require("request");
+const fs = require("fs");
+const path = require("path");
+const mkdirp = require("mkdirp");
+const _ = require("lodash");
 
 function createDirectory(options) {
   return new Promise(function(resolve, reject) {
@@ -11,7 +10,6 @@ function createDirectory(options) {
       if (err) {
         return reject(err);
       }
-
       resolve();
     });
   });
