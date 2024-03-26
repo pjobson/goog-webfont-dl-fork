@@ -1,10 +1,7 @@
 {
-  "name": "goog-webfont-dl",
-  "version": "1.0.4",
+  "name": "goog-webfont-dl-fork",
+  "version": "1.0.5",
   "description": "A utility to download google webfonts to your local machine",
-  "bin": {
-    "goog-webfont-dl": "./cli.js"
-  },
   "main": "./index.js",
   "dependencies": {
     "request": "^2.88.1",
@@ -16,20 +13,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/jrnewell/goog-webfont-dl.git"
+    "url": "git://github.com/pjobson/goog-webfont-dl.git"
   },
-  "keywords": [
-    "webfont",
-    "font",
-    "google",
-    "woff",
-    "ttf",
-    "eot"
-  ],
-  "author": "James Newell <james.newell@gmail.com>",
+  "author": "Paul Jobson <pjobson@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jrnewell/goog-webfont-dl/issues"
+    "url": "https://github.com/pjobson/goog-webfont-dl-fork/issues"
   },
   "engines": {
     "node": ">=6"
