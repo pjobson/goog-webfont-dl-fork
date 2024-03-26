@@ -6,10 +6,7 @@
   "dependencies": {
     "request": "^2.88.1",
     "css": "^2.2.4",
-    "commander": "^2.20.0",
-    "lodash": "^4.17.20",
-    "mkdirp": "^0.5.5",
-    "bluebird": "^3.7.2"
+    "mkdirp": "^0.5.5"
   },
   "repository": {
     "type": "git",
