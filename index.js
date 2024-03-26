@@ -11,7 +11,7 @@ const allStyles = [
   "100italic", "300italic", "400italic", "700italic", "900italic",
 ];
 
-const googWebFontDl = async (options) => {
+const googWebFontDlFork = async (options) => {
   options = (typeof options === "string") ? { font: options } : options;
 
   if (options.font == null) {
@@ -29,8 +29,6 @@ const googWebFontDl = async (options) => {
   if (options.subset) {
     url = `${url}&subset=${querystring.escape(options.subset)}`;
   }
-
-  console.log(`Downloading webfont formats: "${options.formats}" to folder "${options.destination}"`);
 
   cssParser(options, url).then(async fontlist => {
     fontDownloader(options, fontlist.flat());
