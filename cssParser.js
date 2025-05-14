@@ -93,7 +93,7 @@ const parseFontsFromCSS = (format, options, cssText) => {
 }
 
 const downloadAndParseCSS = (options, url) => {
-  return Promise.all([...options.formats].map(async format => {
+  return Promise.all([...options.styles].map(async format => {
     const cssText = await downloadCSS(format, url);
     const fontlist = await parseFontsFromCSS(format, options, cssText);
     return fontlist;
